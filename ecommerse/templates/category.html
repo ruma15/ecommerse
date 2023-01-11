@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+  {% if category %}
+    {{category.description|truncatewords:155 }}
+  {% else %}
+   Welcome to Pink Cart Store Where you can buy different items ....
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+{% if category %}
+    {{category.name}} -Pink Store
+{% else %}
+    See our New collections-Pink Store
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+{% if category %}
+ <div>
+     <div class="row my_row_class">
+
+
+           <p  style="font-size:22px;margin-left:40%; " >  <a class="text-center link" href="{% url 'ecomapp:allProdCat' %}">Our Products Collections </p></a>
+
+
+     </div>
+ </div>
+{% endif %}
+
+
+<div class="mx_auto">
+    <div>
+    {% if category %}
+    <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}"><br>
+    </div>
+    <div><h1 class="text-center my-title">
+        {{category.name}}
+    </h1>
+        <p class="text-justify">{{category.description}}</p>
+    </div>
+   
+    {% else %}
+
+          <img class="my_image my-image-padding" src="{% static 'img/banner1.png' %}" alt="our products" >
+
+   <br><br>
+
+<div>
+    <h1 class="text-center my-title" >
+        Our Product Collections
+    </h1>
+     <p class="text-justify my-p " > New Trends in Clothes. High Quality, Up to 85% Off. Free Shipping Available! A Great Selection of Clothes.Women's Fashion Clothes - Buy Ladies Clothing, Shoes & Footwear, Bags, Sunglasses, Watches etc Online in Nepal. | Thulo.com Women's Fashion Shop by Category Shop by Category Search Filters Featured Vendors Sazuna jewels Of Nepal Jagannath Traders NAVIGATE Veerjara OUXI Classic Collection XimiVogue Karki & Murphy handicrafts Perla KTM CTY</p>
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products %}
+        <div class="my-bottom-margin col-9 col-sm-4 col-md-4  xol-lg-4">
+
+            <div class="card text-center" style="min-width:18rem">
+                <a href="{{product.get_url}}"> <img class="card-img-top my-image" src="{{product.image.url}}" alt="{{product.name}}" height="150px" width="150px"></a>
+                <div class="card-body">
+
+                        <h4>{{product.name}}</h4>
+                        <p>{{product.price}}</p>
+
+                    </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx_auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}} </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+
+{% endblock %}
+
